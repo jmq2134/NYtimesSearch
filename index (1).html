@@ -101,6 +101,7 @@
                 var dateTime = results[i].pub_date;
                 var articleURL = results[i].web_url;
 
+
                 console.log(title);
                 console.log(authorName);
                 console.log(section);
@@ -112,7 +113,7 @@
                 var author = $("<p>").text(authorName);
                 var section = $("<p>").text("Section: " + section);
                 var dateTime = $("<p>").text(dateTime);
-                var articleURL = $("<p>").attr("src", articleURL);
+                var articleURL = $("<p>").text(articleURL);
 
                 $("#sectionDiv").append(articleNum, titleDiv, author, section, dateTime, articleURL);
 
