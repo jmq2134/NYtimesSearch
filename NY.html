@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>New York Times Article Search</title>
+</head>
+
+<body>
+    <div class="sectionDiv"></div>
+    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript">
+    // $(".search").on("click", function() {
+
+    function searchNYT() {
+
+        var searchTerm = "Cleveland"; 
+        var numOfRecords = 5;
+        var startYear = "20050101"; //add 0101
+        var endYear = "20070101"; // add 0101
+
+
+        var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=472f48d436eb4648b52d24fab81cba8f&q=" + searchTerm + "&begin_date=" + startYear + "&end_date=" + endYear;
+
+        console.log(queryURL);
+        $.ajax({
+            url: queryURL,
+            method: "GET"
+        }).done(function(response) {
+
+            var results = response.response.docs;
+
+            console.log(response);
+
+            for (var i = 0; i < 5; i++) {
+
+                var title = results[i].headline.main;
+                var author = results[i].byline.original;
+                var section = results[i].section_name;
+                var dateTime = results[i].pub_date;
+                var articleURL = results[i].web_url;
+
+                console.log(title);
+                console.log(author);
+                console.log(section);
+                console.log(dateTime);
+                console.log(articleURL);
+
+                var articleNum = $("<p>").text(i + 1);
+                var titleDiv = $("<p>").text("Title: " + title);
+                var author = $("<p>").text(author);
+                var section = $("<p>").text("Section: " + section);
+                var dateTime = $("<p>").text(dateTime);
+                var articleURL = $("<p>").text(articleURL);
+
+                $(".sectionDiv").append(articleNum, titleDiv, author, section, dateTime, articleURL);
+
+
+
+            };
+        });
+    }
+
+
+
+    searchNYT();
+    </script>
+</body>
+
+</html>
