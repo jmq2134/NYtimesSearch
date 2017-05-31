@@ -66,8 +66,8 @@
 
         var searchTerm = $("#searchTerm").val();
         var numOfRecords = $("#numberOfRecords").val();
-        var startYear = $("#startYear").val(); //add 0101
-        var endYear = $("#endYear").val(); // add 0101
+        var startYear = $("#startYear").val() + "0101";
+        var endYear = $("#endYear").val() + "0101";
 
         console.log(searchTerm);
         console.log(numOfRecords);
@@ -89,25 +89,32 @@
             for (var i = 0; i < 5; i++) {
 
                 var title = results[i].headline.main;
-                var author = results[i].byline.original;
+
+
+                //check out Conditional (Ternary) Operators on the below link
+                //https://www.w3schools.com/js/js_comparisons.asp
+                //variablename = (condition) ? value1:value2 
+                //have to write a conditional statement if the authorName returns null
+
+                var authorName = (results[i].byline == null) ? "unknown" : results[i].byline.original;
                 var section = results[i].section_name;
                 var dateTime = results[i].pub_date;
                 var articleURL = results[i].web_url;
 
                 console.log(title);
-                console.log(author);
+                console.log(authorName);
                 console.log(section);
                 console.log(dateTime);
                 console.log(articleURL);
 
                 var articleNum = $("<p>").text(i + 1);
                 var titleDiv = $("<p>").text("Title: " + title);
-                var author = $("<p>").text(author);
+                var author = $("<p>").text(authorName);
                 var section = $("<p>").text("Section: " + section);
                 var dateTime = $("<p>").text(dateTime);
                 var articleURL = $("<p>").text(articleURL);
 
-                $(".sectionDiv").append(articleNum, titleDiv, author, section, dateTime, articleURL);
+                $("#sectionDiv").append(articleNum, titleDiv, author, section, dateTime, articleURL);
 
 
 
