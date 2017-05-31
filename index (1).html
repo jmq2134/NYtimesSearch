@@ -86,7 +86,7 @@
 
             console.log(response);
 
-            for (var i = 0; i < 5; i++) {
+            for (var i = 0; i < numOfRecords; i++) {
 
                 var title = results[i].headline.main;
 
@@ -112,7 +112,7 @@
                 var author = $("<p>").text(authorName);
                 var section = $("<p>").text("Section: " + section);
                 var dateTime = $("<p>").text(dateTime);
-                var articleURL = $("<p>").text(articleURL);
+                var articleURL = $("<p>").attr("src", articleURL);
 
                 $("#sectionDiv").append(articleNum, titleDiv, author, section, dateTime, articleURL);
 
