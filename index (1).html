@@ -4,13 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <title>NY Times</title>
+    <!-- Reset CSS -->
     <link rel="stylesheet" href="reset.css">
-    <link rel="stylesheet" href="style.css">
-    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <!-- Optional theme -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
-    <!-- <script src= "assets/javascript/game.js"> </script> -->
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="style.css">
+    <!-- jQuery-->
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
 </head>
 
 <body>
@@ -30,7 +31,7 @@
             </section>
             <section class="btnSection">
                 <button id="search"> Search </button>
-                <button id="clearResult"> Clear Result </button>
+                <button id="clear"> Clear Results </button>
             </section>
         </section>
         <div class="container" id="results">
@@ -45,25 +46,28 @@
                     <div class="row" id="section"></div>
                     <div class="row" id="dateTime"></div>
                     <div class="row" id="articleURL"></div>
+                    <br>
                 </div>
             </div>
         </div>
     </div>
     </div>
-    <script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript">
-    $("#search").on("click", function() {
 
+    <script type="text/javascript">
+    // On search button click run searchNYT function
+    $("#search").on("click", function() {
         searchNYT();
     });
 
+    // On clear button click run clearResults function
+    $("#clear").on("click", function() {
+        clearResults();
+    });
+
+    /// SEARCH NYT FUNCTION
     function searchNYT() {
 
-        // var searchTerm = "Cleveland";
-        // var numOfRecords = 5;
-        // var startYear = "20050101"; //add 0101
-        // var endYear = "20070101"; // add 0101
-
+        // Pulls search parameters from form
         var searchTerm = $("#searchTerm").val();
         var numOfRecords = $("#numberOfRecords").val();
         var startYear = $("#startYear").val() + "0101";
@@ -74,40 +78,30 @@
         console.log(startYear);
         console.log(endYear);
 
+        // Query URL for NYT APIS
         var queryURL = "https://api.nytimes.com/svc/search/v2/articlesearch.json?api-key=472f48d436eb4648b52d24fab81cba8f&q=" + searchTerm + "&begin_date=" + startYear + "&end_date=" + endYear;
 
-        console.log(queryURL);
+        // AJAX request
         $.ajax({
             url: queryURL,
             method: "GET"
         }).done(function(response) {
 
+            // Response variable
             var results = response.response.docs;
-
             console.log(response);
 
+            // For loop to grab articles based numOfRecords
             for (var i = 0; i < numOfRecords; i++) {
 
+                // Pull out results from AJAX request and assign to new variables
                 var title = results[i].headline.main;
-
-
-                //check out Conditional (Ternary) Operators on the below link
-                //https://www.w3schools.com/js/js_comparisons.asp
-                //variablename = (condition) ? value1:value2 
-                //have to write a conditional statement if the authorName returns null
-
                 var authorName = (results[i].byline == null) ? "unknown" : results[i].byline.original;
                 var section = results[i].section_name;
                 var dateTime = results[i].pub_date;
                 var articleURL = results[i].web_url;
 
-
-                console.log(title);
-                console.log(authorName);
-                console.log(section);
-                console.log(dateTime);
-                console.log(articleURL);
-
+                // Create divs to hold gathered article info
                 var articleNum = $("<p>").text(i + 1);
                 var titleDiv = $("<p>").text("Title: " + title);
                 var author = $("<p>").text(authorName);
@@ -115,12 +109,17 @@
                 var dateTime = $("<p>").text(dateTime);
                 var articleURL = $("<p>").text(articleURL);
 
-                $("#sectionDiv").append(articleNum, titleDiv, author, section, dateTime, articleURL);
+                // Append all divs to the sectionDiv
+                $("#sectionDiv").append(articleNum, titleDiv, author, section, dateTime, articleURL, "<br>");
+            }; // Closes for loop
 
+        }); // Closes AJAX function
 
+    } // Closes searchNYT function
 
-            };
-        });
+/// CLEAR SEARCH RESULTS FUNCTION
+    function clearResults() {
+        $("#sectionDiv").html("");
     }
     </script>
 </body>
